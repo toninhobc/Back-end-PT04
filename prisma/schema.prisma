@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Usuario {
+  id           Int         @id @default(autoincrement())
+  nome         String
+  email        String      @unique
+  senha        String
+  departamento String
+  curso        String
+  foto_perfil  Bytes?
+  createdAt    DateTime    @default(now()) // Adiciona um timestamp de criação automático
+  updatedAt    DateTime    @updatedAt // Atualiza automaticamente a cada modificação
+  posts        Avaliacao[]
+}
+
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  usuarioID  Int
+  author     Usuario     @relation(fields: [usuarioID], references: [id])
+  professor  String
+  disciplina String
+  conteudo   String
+  createdAt  DateTime @default(now()) // Adiciona um timestamp de criação automático
+  updatedAt  DateTime @updatedAt // Atualiza automaticamente a cada modificação
+}
+
+model Comentarios {
+  id          Int      @id @default(autoincrement())
+  usuarioID   Int
+  avaliacaoID Int
+  conteudo    String
+  createdAt   DateTime @default(now()) // Adiciona um timestamp de criação automático
+  updatedAt   DateTime @updatedAt // Atualiza automaticamente a cada modificação
+}
+
+model Professor {
+  id    Int @id @default(autoincrement())
+  nome    String
+  departamento    String
+  disciplinaID    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Disciplina {
+  id    Int @id @default(autoincrement())
+  nome    String
+  professorID   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
