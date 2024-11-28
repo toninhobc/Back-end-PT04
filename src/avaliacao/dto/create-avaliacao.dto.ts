@@ -1,16 +1,20 @@
-import { IsDate, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateAvaliacaoDto {
-    @IsNumber()
-    usuarioId: number;
-    @IsNumber()
-    professorId: number;
-    @IsNumber()
-    disciplinaId: number;
-    @IsString()
-    conteudo: string;
-    @IsDate()
-    createdAt: Date;
-    @IsDate()
-    updatedAt: Date;
+  @IsNumber()
+  usuarioID: number;
+  @IsNumber()
+  professorID: number;
+  @IsNumber()
+  disciplinaID: number;
+  @IsString()
+  conteudo: string;
+  @IsDate()
+  createdAt: Date;
+  @IsDate()
+  updatedAt: Date;
+  @IsString()
+  professor: string;
+  @IsString()
+  disciplina: string;
 }

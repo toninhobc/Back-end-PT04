@@ -1,4 +1,14 @@
-import { Controller, Post, Body, ValidationPipe, Get, Param, Delete, Patch, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  ValidationPipe,
+  Get,
+  Param,
+  Delete,
+  Patch,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { AvaliacaoService } from './avaliacao.service';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
@@ -9,7 +19,7 @@ export class AvaliacaoController {
 
   @Post()
   async create(@Body(ValidationPipe) avaliacaoData: CreateAvaliacaoDto) {
-    return await this.avaliacaoService.create(avaliacaoData); 
+    return await this.avaliacaoService.create(avaliacaoData);
   }
 
   @Get()
@@ -28,7 +38,10 @@ export class AvaliacaoController {
   }
 
   @Patch(':id')
-  async updateAvaliacao(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) data: UpdateAvaliacaoDto) {
+  async updateAvaliacao(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) data: UpdateAvaliacaoDto,
+  ) {
     return await this.avaliacaoService.updateAvaliacao(id, data);
   }
 }
