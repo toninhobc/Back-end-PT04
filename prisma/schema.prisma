@@ -7,7 +7,7 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Usuario {
+model User {
   id           Int         @id @default(autoincrement())
   nome         String
   email        String      @unique
@@ -23,7 +23,7 @@ model Usuario {
 model Avaliacao {
   id         Int      @id @default(autoincrement())
   usuarioID  Int
-  author     Usuario     @relation(fields: [usuarioID], references: [id])
+  author     User     @relation(fields: [usuarioID], references: [id])
   professor  String
   disciplina String
   conteudo   String
