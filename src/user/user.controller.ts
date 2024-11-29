@@ -9,13 +9,13 @@ import {
   Patch,
   ParseIntPipe,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly usersService: UserService) {}
 
   @Post()
   async creat(@Body(ValidationPipe) userData: CreateUserDto){

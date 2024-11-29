@@ -4,13 +4,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
-    private readonly prisma: PrismaService,
+    private prisma: PrismaService,
   ) {}
 
   async create(data: CreateUserDto) {
-    const user = await this.prisma.user.creat({
+    const user = await this.prisma.user.create({
         data: data,
     });
     return user;
