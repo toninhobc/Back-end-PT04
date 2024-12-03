@@ -12,6 +12,4 @@ export class UpdateUserDto {
   
   @IsString()
   curso: string;
-
-  
 }
