@@ -18,7 +18,7 @@ export class UserController {
   constructor(private readonly usersService: UserService) {}
 
   @Post()
-  async creat(@Body(ValidationPipe) userData: CreateUserDto){
+  async creat(@Body(ValidationPipe) userData: CreateUserDto) {
     return await this.usersService.create(userData);
   }
 
@@ -38,9 +38,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) data: UpdateUserDto){
-    return await this.usersService.update(id,data);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) data: UpdateUserDto,
+  ) {
+    return await this.usersService.update(id, data);
   }
-
-  
 }
