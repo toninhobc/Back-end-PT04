@@ -14,7 +14,7 @@ import { Public } from './decorators/isPublic.decorator';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-@Public()
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   login(@Body() loginRequestBody : LoginRequestBody) {

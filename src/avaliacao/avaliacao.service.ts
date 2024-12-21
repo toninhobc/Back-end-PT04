@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
@@ -31,12 +31,17 @@ export class AvaliacaoService {
   }
 
   async deleteAvaliacao(id: number) {
-    return await this.prisma.avaliacao.delete({
-      where: {
-        id: id,
-      },
+    const avaliacao = await this.prisma.avaliacao.findUnique({
+      where: { id },
     });
-  }
+    
+    if (!avaliacao) {
+      throw new NotFoundException(`Avaliacao with ID ${id} not found`);
+    }
+      return await this.prisma.avaliacao.delete({
+        where: { id },
+      });
+    }
 
   async updateAvaliacao(id: number, data: UpdateAvaliacaoDto) {
     return await this.prisma.avaliacao.update({
