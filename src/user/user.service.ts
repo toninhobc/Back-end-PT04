@@ -13,6 +13,7 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('Este e-mail já está sendo usado.');
     }
+    
     const hashedPassword = await bcrypt.hash(data.senha, 10);
     
     return await this.prisma.user.create({
@@ -81,6 +82,8 @@ export class UserService {
       },
     });
   }
+  
+  //update não funciona sem o senha
   async update(id: number, data: UpdateUserDto) {
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -90,23 +93,16 @@ export class UserService {
       throw new NotFoundException(`User with this ID not found`);
     }
 
-    const hashedPassword = await bcrypt.hash(data.senha, 10);
-
-    return await this.prisma.user.update({
-      where: { id },
-      data: {
-        ...data,
-        senha: hashedPassword,
-      },
-      select: {
-        id: true,
-        email: true,
-        nome: true,
-        createdAt: true,
-        updatedAt: true,
-        posts: true,
-      },
-    });
+    const updateData: any = { ...data };
+     if (data.senha) { 
+      const hashedPassword = await bcrypt.hash(data.senha, 10); 
+      updateData.senha = hashedPassword; } 
+      else { delete updateData.senha; } 
+      return await this.prisma.user.update({ 
+        where: { id }, 
+        data: updateData, 
+        select: { 
+          id: true, email: true, nome: true, createdAt: true, updatedAt: true, posts: true, }, });
   }
   async findByEmail(email: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
@@ -116,5 +112,5 @@ export class UserService {
     }
     
     return user;
-  } 
+  }
 }
