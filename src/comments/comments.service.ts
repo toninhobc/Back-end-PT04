@@ -1,45 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateCommentsDto } from './dto/create-comments.dto';
+import { UpdateCommentsDto } from './dto/update-comments.dto';
 
 @Injectable()
 export class CommentsService {
-  private comments = [];
+  constructor(private prisma: PrismaService) {}
 
   // Create
-  create(content: string, postId: number, userId: number) {
-    const comment = {
-      id: this.comments.length + 1,
-      content,
-      postId,
-      userId,
-      createdAt: new Date(),
-    };
-    this.comments.push(comment);
+  async create(data: CreateCommentsDto) {
+    const comment = await this.prisma.comentarios.create({
+      data: data,
+    });
     return comment;
   }
 
-  // Read (all comments or by post)
-  findAll() {
-    return this.comments;
+  // Read
+  async findAll() {
+    return await this.prisma.comentarios.findMany();
   }
 
-  findByPostId(postId: number) {
-    return this.comments.filter((comment) => comment.postId === postId);
+  async findComment(id: number) {
+    return await this.prisma.comentarios.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
   // Update
-  update(id: number, content: string) {
-    const comment = this.comments.find((c) => c.id === id);
-    if (!comment) throw new Error('Comment not found');
-    comment.content = content;
-    comment.updatedAt = new Date();
-    return comment;
+  async update(id: number, data: UpdateCommentsDto) {
+    return await this.prisma.comentarios.update({
+      where: {
+        id: id,
+      },
+      data: data,
+    });
   }
 
   // Delete
-  remove(id: number) {
-    const index = this.comments.findIndex((c) => c.id === id);
-    if (index === -1) throw new Error('Comment not found');
-    this.comments.splice(index, 1);
-    return { message: 'Comment deleted' };
-  }
+  async delete(id: number) {
+    const comment = await this.prisma.comentarios.findUnique({
+      where: { id },
+    });
+
+    if (!comment) {
+      throw new NotFoundException(`Comment with ID ${id} not found`);
+    }
+      return await this.prisma.comentarios.delete({
+        where: { id },
+      });
+    }
 }
